@@ -43,6 +43,7 @@ public class MazeConfigure {
             }
 
             public void setField(int row, int col, Field field) {
+                field.setMaze(this);
                 fields[row][col] = field;
             }
         };
@@ -81,7 +82,6 @@ public class MazeConfigure {
                 }
             }
 
-            current_field.setMaze(maze);
             maze.setField(current_row, current_col, current_field);
         }
 
