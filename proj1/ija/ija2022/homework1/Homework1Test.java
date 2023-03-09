@@ -19,7 +19,7 @@ import org.junit.Assert;
  * @author koci
  */
 public class Homework1Test {
-    
+
     /**
      * Test třídy MazeConfigure. Testuje odolnost vůči chobnému vstupu.
      */
@@ -136,29 +136,46 @@ public class Homework1Test {
     @Test
     public void test05() {
         Maze maze = createTestMaze();
-        
+
         Field f = maze.getField(4, 2);
         MazeObject obj = f.get();
-        
+
         Assert.assertTrue("Pacman se muze posunout doprava", obj.canMove(Field.Direction.R));
         Assert.assertTrue("Pacman se muze posunout doleva", obj.canMove(Field.Direction.L));
         Assert.assertFalse("Pacman se nemuze posunout nahoru", obj.canMove(Field.Direction.U));
         Assert.assertFalse("Pacman se nemuze posunout dolu", obj.canMove(Field.Direction.D));
-        
+
         Assert.assertFalse("Posun nahoru se nezdari", obj.move(Field.Direction.U));
         Assert.assertFalse("Puvodni misto pacmana je obsazeno", f.isEmpty());
         Assert.assertTrue("Vedlejsi misto je volne", f.nextField(Field.Direction.U).isEmpty());
         Assert.assertFalse("Posun dolu se nezdari", obj.move(Field.Direction.D));
         Assert.assertFalse("Puvodni misto pacmana je obsazeno", f.isEmpty());
         Assert.assertTrue("Vedlejsi misto je volne", f.nextField(Field.Direction.D).isEmpty());
-        
+
         Assert.assertTrue("Posun doleva se zdari", obj.move(Field.Direction.L));
         Assert.assertTrue("Puvodni misto pacmana je volne", f.isEmpty());
         Assert.assertFalse("Vedlejsi misto je obsazene", f.nextField(Field.Direction.L).isEmpty());
+
+        Assert.assertEquals("Na novem miste je stejny pacman", obj, f.nextField(Field.Direction.L).get());
+    }
+
+    /* custom test */
+    @Test
+    public void test06() {
+        Maze maze = createTestMaze();
+        MazeObject obj = maze.getField(4, 2).get();
         
-        Assert.assertEquals("Na novem miste je stejny pacman", obj, f.nextField(Field.Direction.L).get());        
-    }    
-    
+        maze.print();
+
+        obj.move(Field.Direction.L);
+        obj.move(Field.Direction.U);
+        obj.move(Field.Direction.U);
+        obj.move(Field.Direction.U);
+        obj.move(Field.Direction.R);
+
+        maze.print();
+    }
+
     /**
      * Pomocná metoda pro vytvoření testovacího bludiště. Využito v testech 03, 04 a 05.
      * @return Vytvoné bludiště.

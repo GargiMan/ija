@@ -8,4 +8,6 @@ public interface Maze {
     Field getField(int row, int col);
 
     void setField(int row, int col, Field field);
+
+    void print();
 }
