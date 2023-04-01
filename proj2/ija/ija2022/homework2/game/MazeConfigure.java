@@ -1,7 +1,8 @@
 package ija.ija2022.homework2.game;
 
-import ija.ija2022.homework2.common.Field;
-import ija.ija2022.homework2.common.Maze;
+import ija.ija2022.homework2.tool.common.*;
+
+import java.util.List;
 
 public class MazeConfigure {
 
@@ -10,7 +11,7 @@ public class MazeConfigure {
     private boolean valid = true;
     private boolean reading = false;
     private boolean spawn_set = false;
-    private Maze maze;
+    private CommonMaze maze;
 
     public void startReading(int rows, int cols) {
 
@@ -18,10 +19,24 @@ public class MazeConfigure {
 
         reading = true;
 
-        maze = new Maze() {
+        maze = new CommonMaze() {
+
             private final int numRows = rows + 2 * BORDER_SIZE;
             private final int numCols = cols + 2 * BORDER_SIZE;
-            private final Field[][] fields = new Field[numRows][numCols];
+            private final CommonField[][] fields = new CommonField[numRows][numCols];
+
+            @Override
+            public CommonField getField(int row, int col) {
+                if (row < BORDER_SIZE - 1 || col < BORDER_SIZE - 1 || row > BORDER_SIZE + rows || col > BORDER_SIZE + cols)
+                    return null;
+
+                return fields[row][col];
+            }
+
+            public void setField(int row, int col, CommonField field) {
+                field.setMaze(this);
+                fields[row][col] = field;
+            }
 
             @Override
             public int numRows() {
@@ -34,17 +49,8 @@ public class MazeConfigure {
             }
 
             @Override
-            public Field getField(int row, int col) {
-
-                if (row < BORDER_SIZE - 1 || col < BORDER_SIZE - 1 || row > BORDER_SIZE + rows || col > BORDER_SIZE + cols)
-                    return null;
-
-                return fields[row][col];
-            }
-
-            public void setField(int row, int col, Field field) {
-                field.setMaze(this);
-                fields[row][col] = field;
+            public List<CommonMazeObject> ghosts() {
+                return null;
             }
 
             public void print() {
@@ -77,7 +83,7 @@ public class MazeConfigure {
 
         for (int current_col = BORDER_SIZE; current_col < maze.numCols()-BORDER_SIZE; current_col++) {
 
-            Field current_field;
+            CommonField current_field;
 
             switch (char_line[current_col-BORDER_SIZE]) {
                 case 'S' -> {
@@ -117,7 +123,7 @@ public class MazeConfigure {
         return valid;
     }
 
-    public Maze createMaze() {
+    public CommonMaze createMaze() {
 
         valid = valid && !reading && spawn_set && current_row == maze.numRows()-BORDER_SIZE;
 
