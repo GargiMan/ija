@@ -12,13 +12,13 @@ compile:
 	javac -cp .:ijatool.jar:junit-platform-console-standalone-1.6.0.jar $(TESTS)
 
 compile-visual:
-    javac -cp .:ijatool.jar -d build $(VISUAL)
+	javac -cp .:ijatool.jar -d build $(VISUAL)
 
 run: compile
 	java -cp ./build:ijatool.jar:junit-platform-console-standalone-1.6.0.jar org.junit.runner.JUnitCore $(TESTS_CLASS)
 
 run-visual: compile-visual
-    java -cp ./build:ijatool.jar $(VISUAL_CLASS)
+	java -cp ./build:ijatool.jar $(VISUAL_CLASS)
 
 clean:
 	find . -name "*.class" -type f -delete
