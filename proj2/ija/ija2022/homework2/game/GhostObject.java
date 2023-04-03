@@ -2,8 +2,9 @@ package ija.ija2022.homework2.game;
 
 import ija.ija2022.homework2.tool.common.CommonField;
 import ija.ija2022.homework2.tool.common.CommonMazeObject;
+import ija.ija2022.homework2.tool.common.Observable;
 
-public class GhostObject implements CommonMazeObject {
+public class GhostObject implements CommonMazeObject, Observable.Observer {
 
     private CommonField field;
 
@@ -19,9 +20,9 @@ public class GhostObject implements CommonMazeObject {
     @Override
     public boolean move(CommonField.Direction dir) {
         if (canMove(dir)) {
-            ((PathField)field).remove(this);
+            field.removeObserver(this);
             field = field.nextField(dir);
-            ((PathField)field).put(this);
+            field.addObserver(this);
             return true;
         }
         return false;
@@ -35,5 +36,14 @@ public class GhostObject implements CommonMazeObject {
     @Override
     public int getLives() {
         return 0;
+    }
+
+
+    @Override
+    public void update(Observable observable) {
+         CommonMazeObject mazeObject = ((PathField)observable).get();
+         if (mazeObject instanceof PacmanObject) {
+            ((PacmanObject) mazeObject).hit();
+         }
     }
 }

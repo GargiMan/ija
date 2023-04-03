@@ -45,12 +45,13 @@ public class MazeConfigure {
                         spawn_set = true;
                     }
                     current_field = new PathField(current_row, current_col);
-                    ((PathField)current_field).put(new PacmanObject(current_field));
+                    PacmanObject pacman = new PacmanObject(current_field);
+                    current_field.addObserver(pacman);
                 }
                 case 'G' -> {
                     current_field = new PathField(current_row, current_col);
                     GhostObject ghost = new GhostObject(current_field);
-                    ((PathField)current_field).put(ghost);
+                    current_field.addObserver(ghost);
                     maze.addGhost(ghost);
                 }
                 case '.' -> {

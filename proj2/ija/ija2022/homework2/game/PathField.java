@@ -4,12 +4,16 @@ import ija.ija2022.homework2.tool.common.CommonField;
 import ija.ija2022.homework2.tool.common.CommonMaze;
 import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PathField implements CommonField {
 
     private final int row;
     private final int col;
     private CommonMaze maze;
     private CommonMazeObject mazeObject = null;
+    private final List<Observer> observers = new ArrayList<>();
 
     public PathField(int row, int col) {
         this.row = row;
@@ -25,26 +29,16 @@ public class PathField implements CommonField {
         return maze.getField(row + dirs.deltaRow(), col + dirs.deltaCol());
     }
 
-    public boolean put(CommonMazeObject object) {
-        if (!isEmpty()) {
-            return false;
-        }
-
-        mazeObject = object;
-        return true;
-    }
-
-    public boolean remove(CommonMazeObject object) {
-
-        if (isEmpty() || mazeObject != object) return false;
-
-        mazeObject = null;
-        return true;
-    }
-
     @Override
     public boolean isEmpty() {
         return mazeObject == null;
+    }
+
+    public boolean hasGhost() {
+        for (Observer observer : observers) {
+            if (observer instanceof GhostObject) return true;
+        }
+        return false;
     }
 
     @Override
@@ -59,7 +53,7 @@ public class PathField implements CommonField {
 
     @Override
     public boolean contains(CommonMazeObject commonMazeObject) {
-        return false;
+        return observers.contains((Observer) commonMazeObject);
     }
 
     @Override
@@ -72,16 +66,33 @@ public class PathField implements CommonField {
 
     @Override
     public void addObserver(Observer observer) {
-
+        if ((isEmpty() && observer instanceof GhostObject) || observer instanceof PacmanObject) {
+            mazeObject = (CommonMazeObject) observer;
+        }
+        observers.add(observer);
+        notifyObservers(observer);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-
+        if (!isEmpty() && mazeObject.equals(observer)) {
+            mazeObject = (CommonMazeObject) observers.stream().filter(observerFound -> observerFound instanceof GhostObject && !observerFound.equals(observer)).findFirst().orElse(null);
+        }
+        observers.remove(observer);
+        notifyObservers(observer);
     }
 
     @Override
     public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
+    }
 
+    public void notifyObservers(Observer ignore) {
+        for (Observer observer : observers) {
+            if (observer.equals(ignore)) continue;
+            observer.update(this);
+        }
     }
 }
