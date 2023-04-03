@@ -1,38 +1,31 @@
 package ija.ija2022.homework2.game;
 
-import ija.ija2022.homework2.common.Field;
-import ija.ija2022.homework2.common.Maze;
-import ija.ija2022.homework2.common.MazeObject;
+import ija.ija2022.homework2.tool.common.CommonField;
+import ija.ija2022.homework2.tool.common.CommonMaze;
+import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
-public class PathField implements Field {
+public class PathField implements CommonField {
 
     private final int row;
     private final int col;
-    private Maze maze;
-    private MazeObject mazeObject = null;
+    private CommonMaze maze;
+    private CommonMazeObject mazeObject = null;
 
     public PathField(int row, int col) {
         this.row = row;
         this.col = col;
     }
 
-    @Override
-    public void setMaze(Maze maze) {
+    public void setMaze(CommonMaze maze) {
         this.maze = maze;
     }
 
     @Override
-    public Field nextField(Direction dirs) {
-        return switch (dirs) {
-            case U -> maze.getField(row - 1, col);
-            case D -> maze.getField(row + 1, col);
-            case L -> maze.getField(row, col - 1);
-            case R -> maze.getField(row, col + 1);
-        };
+    public CommonField nextField(Direction dirs) {
+        return maze.getField(row + dirs.deltaRow(), col + dirs.deltaCol());
     }
 
-    @Override
-    public boolean put(MazeObject object) {
+    public boolean put(CommonMazeObject object) {
         if (!isEmpty()) {
             return false;
         }
@@ -41,8 +34,7 @@ public class PathField implements Field {
         return true;
     }
 
-    @Override
-    public boolean remove(MazeObject object) {
+    public boolean remove(CommonMazeObject object) {
 
         if (isEmpty() || mazeObject != object) return false;
 
@@ -56,7 +48,7 @@ public class PathField implements Field {
     }
 
     @Override
-    public MazeObject get() {
+    public CommonMazeObject get() {
         return mazeObject;
     }
 
@@ -66,10 +58,30 @@ public class PathField implements Field {
     }
 
     @Override
+    public boolean contains(CommonMazeObject commonMazeObject) {
+        return false;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof PathField) {
             return ((PathField) obj).row == this.row && ((PathField) obj).col == this.col;
         }
         return false;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }

@@ -1,17 +1,20 @@
 package ija.ija2022.homework2.game;
 
-import ija.ija2022.homework2.tool.common.*;
+import ija.ija2022.homework2.tool.common.CommonField;
+import ija.ija2022.homework2.tool.common.CommonMaze;
+import ija.ija2022.homework2.tool.common.CommonMazeObject;
+import ija.ija2022.homework2.tool.common.Observable;
 
 import java.util.List;
 
 public class MazeConfigure {
 
-    private static final int BORDER_SIZE = 1;
+    public static final int BORDER_SIZE = 1;
     private int current_row = BORDER_SIZE;
     private boolean valid = true;
     private boolean reading = false;
     private boolean spawn_set = false;
-    private CommonMaze maze;
+    private Maze maze;
 
     public void startReading(int rows, int cols) {
 
@@ -19,58 +22,7 @@ public class MazeConfigure {
 
         reading = true;
 
-        maze = new CommonMaze() {
-
-            private final int numRows = rows + 2 * BORDER_SIZE;
-            private final int numCols = cols + 2 * BORDER_SIZE;
-            private final CommonField[][] fields = new CommonField[numRows][numCols];
-
-            @Override
-            public CommonField getField(int row, int col) {
-                if (row < BORDER_SIZE - 1 || col < BORDER_SIZE - 1 || row > BORDER_SIZE + rows || col > BORDER_SIZE + cols)
-                    return null;
-
-                return fields[row][col];
-            }
-
-            public void setField(int row, int col, CommonField field) {
-                field.setMaze(this);
-                fields[row][col] = field;
-            }
-
-            @Override
-            public int numRows() {
-                return numRows;
-            }
-
-            @Override
-            public int numCols() {
-                return numCols;
-            }
-
-            @Override
-            public List<CommonMazeObject> ghosts() {
-                return null;
-            }
-
-            public void print() {
-                System.out.println();
-                for (int row = 0; row < numRows; row++) {
-                    for (int col = 0; col < numCols; col++) {
-                        if (fields[row][col] instanceof WallField) {
-                            System.out.print("X");
-                        } else {
-                            if (fields[row][col].isEmpty()) {
-                                System.out.print(".");
-                            } else {
-                                System.out.print("S");
-                            }
-                        }
-                    }
-                    System.out.println();
-                }
-            }
-        };
+        maze = new Maze(rows, cols);
     }
 
     public boolean processLine(String line) {
@@ -93,7 +45,13 @@ public class MazeConfigure {
                         spawn_set = true;
                     }
                     current_field = new PathField(current_row, current_col);
-                    current_field.put(new PacmanObject(current_field));
+                    ((PathField)current_field).put(new PacmanObject(current_field));
+                }
+                case 'G' -> {
+                    current_field = new PathField(current_row, current_col);
+                    GhostObject ghost = new GhostObject(current_field);
+                    ((PathField)current_field).put(ghost);
+                    maze.addGhost(ghost);
                 }
                 case '.' -> {
                     current_field = new PathField(current_row, current_col);
@@ -130,6 +88,7 @@ public class MazeConfigure {
         if (!valid)
             return null;
 
+        //set borders
         for (int i = 0; i < BORDER_SIZE; i++) {
 
             int col_L = i;
