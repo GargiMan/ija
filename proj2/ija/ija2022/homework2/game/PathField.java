@@ -66,8 +66,8 @@ public class PathField implements CommonField {
 
     @Override
     public void addObserver(Observer observer) {
-        if (observer instanceof PacmanObject) {
-            mazeObject = (PacmanObject)observer;
+        if ((isEmpty() && observer instanceof GhostObject) || observer instanceof PacmanObject) {
+            mazeObject = (CommonMazeObject) observer;
         }
         observers.add(observer);
         notifyObservers(observer);
@@ -75,8 +75,8 @@ public class PathField implements CommonField {
 
     @Override
     public void removeObserver(Observer observer) {
-        if (!isEmpty() && observer instanceof PacmanObject && mazeObject.equals(observer)) {
-            mazeObject = null;
+        if (!isEmpty() && mazeObject.equals(observer)) {
+            mazeObject = (CommonMazeObject) observers.stream().filter(observerFound -> observerFound instanceof GhostObject && !observerFound.equals(observer)).findFirst().orElse(null);
         }
         observers.remove(observer);
         notifyObservers(observer);
