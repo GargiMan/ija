@@ -11,7 +11,6 @@ public class PacmanObject implements CommonMazeObject, Observable.Observer  {
 
     public PacmanObject(CommonField field) {
         this.field = field;
-        field.addObserver(this);
     }
 
     @Override
@@ -22,9 +21,9 @@ public class PacmanObject implements CommonMazeObject, Observable.Observer  {
     @Override
     public boolean move(CommonField.Direction dir) {
         if (canMove(dir)) {
-            ((PathField)field).remove(this);
+            field.removeObserver(this);
             field = field.nextField(dir);
-            ((PathField)field).put(this);
+            field.addObserver(this);
             return true;
         }
         return false;
@@ -50,16 +49,9 @@ public class PacmanObject implements CommonMazeObject, Observable.Observer  {
     }
 
     @Override
-    public void update(Observable o) {
-        if (field.get() == null) {
-            // Field is empty, do something
-        } else if (field.get() instanceof PacmanObject) {
-            // Pacman is on this field, do something
-        } else if (field.get() instanceof GhostObject) {
-            // Ghost is on this field, do something
+    public void update(Observable observable) {
+        if (((PathField)observable).hasGhost()) {
             hit();
         }
-        // Update visualization
-
     }
 }

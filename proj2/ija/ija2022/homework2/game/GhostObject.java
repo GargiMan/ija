@@ -10,7 +10,6 @@ public class GhostObject implements CommonMazeObject, Observable.Observer {
 
     public GhostObject(CommonField field) {
         this.field = field;
-        field.addObserver(this);
     }
 
     @Override
@@ -21,9 +20,9 @@ public class GhostObject implements CommonMazeObject, Observable.Observer {
     @Override
     public boolean move(CommonField.Direction dir) {
         if (canMove(dir)) {
-            ((PathField) field).remove(this);
+            field.removeObserver(this);
             field = field.nextField(dir);
-            ((PathField) field).put(this);
+            field.addObserver(this);
             return true;
         }
         return false;
@@ -41,16 +40,10 @@ public class GhostObject implements CommonMazeObject, Observable.Observer {
 
 
     @Override
-    public void update(Observable o) {
-        if (field.get() == null) {
-            // Field is empty, do something
-        } else if (field.get() instanceof PacmanObject) {
-            // Pacman is on this field, do something
-            ((PacmanObject) field.get()).hit();
-        } else if (field.get() instanceof GhostObject) {
-            // Ghost is on this field, do something
-        }
-        // Update visualization
-
+    public void update(Observable observable) {
+         CommonMazeObject mazeObject = ((PathField)observable).get();
+         if (mazeObject instanceof PacmanObject) {
+            ((PacmanObject) mazeObject).hit();
+         }
     }
 }
