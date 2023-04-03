@@ -4,12 +4,22 @@ import ija.ija2022.homework2.tool.common.CommonField;
 import ija.ija2022.homework2.tool.common.CommonMaze;
 import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
+import ija.ija2022.homework2.tool.common.Observable;
+//import ija.ija2022.homework2.tool.common.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class PathField implements CommonField {
 
     private final int row;
     private final int col;
     private CommonMaze maze;
     private CommonMazeObject mazeObject = null;
+
+    private List<Observer> observers = new ArrayList<>();
+
+
 
     public PathField(int row, int col) {
         this.row = row;
@@ -31,14 +41,17 @@ public class PathField implements CommonField {
         }
 
         mazeObject = object;
+        notifyObservers();
         return true;
     }
+
 
     public boolean remove(CommonMazeObject object) {
 
         if (isEmpty() || mazeObject != object) return false;
 
         mazeObject = null;
+        notifyObservers();
         return true;
     }
 
@@ -72,16 +85,20 @@ public class PathField implements CommonField {
 
     @Override
     public void addObserver(Observer observer) {
-
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
     }
 
     @Override
     public void removeObserver(Observer observer) {
-
+        observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
     }
 }
