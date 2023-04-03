@@ -58,9 +58,7 @@ public class Maze implements CommonMaze {
         System.out.println();
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                if (fields[row][col] instanceof WallField) {
-                    System.out.print("X");
-                } else {
+                if (fields[row][col].canMove()) {
                     if (fields[row][col].isEmpty()) {
                         System.out.print(".");
                     } else {
@@ -70,6 +68,8 @@ public class Maze implements CommonMaze {
                             System.out.print("G");
                         }
                     }
+                } else {
+                    System.out.print("X");
                 }
             }
             System.out.println();
