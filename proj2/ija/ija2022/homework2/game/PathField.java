@@ -16,7 +16,6 @@ public class PathField implements CommonField {
         this.col = col;
     }
 
-    @Override
     public void setMaze(CommonMaze maze) {
         this.maze = maze;
     }
@@ -26,7 +25,6 @@ public class PathField implements CommonField {
         return maze.getField(row + dirs.deltaRow(), col + dirs.deltaCol());
     }
 
-    @Override
     public boolean put(CommonMazeObject object) {
         if (!isEmpty()) {
             return false;
@@ -36,7 +34,6 @@ public class PathField implements CommonField {
         return true;
     }
 
-    @Override
     public boolean remove(CommonMazeObject object) {
 
         if (isEmpty() || mazeObject != object) return false;

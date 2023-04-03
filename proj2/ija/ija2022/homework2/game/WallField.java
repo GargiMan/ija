@@ -15,21 +15,7 @@ public class WallField implements CommonField {
     }
 
     @Override
-    public void setMaze(CommonMaze maze) {
-    }
-
-    @Override
     public CommonField nextField(Direction dirs) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean put(CommonMazeObject object) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean remove(CommonMazeObject object) {
         throw new UnsupportedOperationException();
     }
 

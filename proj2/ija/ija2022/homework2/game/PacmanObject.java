@@ -20,9 +20,9 @@ public class PacmanObject implements CommonMazeObject {
     @Override
     public boolean move(CommonField.Direction dir) {
         if (canMove(dir)) {
-            field.remove(this);
+            ((PathField)field).remove(this);
             field = field.nextField(dir);
-            field.put(this);
+            ((PathField)field).put(this);
             return true;
         }
         return false;
