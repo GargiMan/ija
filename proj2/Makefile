@@ -1,4 +1,4 @@
-LOGIN=xgerge01
+LOGIN=xmazur09
 TESTS=ija/ija2022/homework2/Homework2Test.java
 TESTS_CLASS=ija.ija2022.homework2.Homework2Test
 VISUAL=ija/ija2022/homework2/Homework2.java
@@ -25,4 +25,4 @@ clean:
 	rm -rf $(LOGIN).zip
 
 zip: clean
-	zip -r $(LOGIN).zip ija -x $(TESTS)
+	zip -r $(LOGIN).zip ija xmazur09.pdf -x $(TESTS) $(VISUAL)
