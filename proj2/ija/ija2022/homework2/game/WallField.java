@@ -1,10 +1,10 @@
 package ija.ija2022.homework2.game;
 
-import ija.ija2022.homework2.common.Field;
-import ija.ija2022.homework2.common.Maze;
-import ija.ija2022.homework2.common.MazeObject;
+import ija.ija2022.homework2.tool.common.CommonField;
+import ija.ija2022.homework2.tool.common.CommonMaze;
+import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
-public class WallField implements Field {
+public class WallField implements CommonField {
 
     private final int row;
     private final int col;
@@ -15,21 +15,21 @@ public class WallField implements Field {
     }
 
     @Override
-    public void setMaze(Maze maze) {
+    public void setMaze(CommonMaze maze) {
     }
 
     @Override
-    public Field nextField(Direction dirs) {
+    public CommonField nextField(Direction dirs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean put(MazeObject object) {
+    public boolean put(CommonMazeObject object) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean remove(MazeObject object) {
+    public boolean remove(CommonMazeObject object) {
         throw new UnsupportedOperationException();
     }
 
@@ -39,7 +39,7 @@ public class WallField implements Field {
     }
 
     @Override
-    public MazeObject get() {
+    public CommonMazeObject get() {
         return null;
     }
 
@@ -49,10 +49,30 @@ public class WallField implements Field {
     }
 
     @Override
+    public boolean contains(CommonMazeObject commonMazeObject) {
+        return false;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof WallField) {
             return ((WallField) obj).row == this.row && ((WallField) obj).col == this.col;
         }
         return false;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }

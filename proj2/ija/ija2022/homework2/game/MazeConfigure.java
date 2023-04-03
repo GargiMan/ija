@@ -1,6 +1,8 @@
 package ija.ija2022.homework2.game;
 
-import ija.ija2022.homework2.tool.common.*;
+import ija.ija2022.homework2.tool.common.CommonField;
+import ija.ija2022.homework2.tool.common.CommonMaze;
+import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class MazeConfigure {
             private final int numRows = rows + 2 * BORDER_SIZE;
             private final int numCols = cols + 2 * BORDER_SIZE;
             private final CommonField[][] fields = new CommonField[numRows][numCols];
+            private List<CommonMazeObject> ghosts;
 
             @Override
             public CommonField getField(int row, int col) {
@@ -50,7 +53,7 @@ public class MazeConfigure {
 
             @Override
             public List<CommonMazeObject> ghosts() {
-                return null;
+                return ghosts;
             }
 
             public void print() {
@@ -95,6 +98,10 @@ public class MazeConfigure {
                     current_field = new PathField(current_row, current_col);
                     current_field.put(new PacmanObject(current_field));
                 }
+                case 'G' -> {
+                    current_field = new PathField(current_row, current_col);
+                    current_field.put(new GhostObject(current_field));
+                }
                 case '.' -> {
                     current_field = new PathField(current_row, current_col);
                 }
@@ -130,6 +137,7 @@ public class MazeConfigure {
         if (!valid)
             return null;
 
+        //set borders
         for (int i = 0; i < BORDER_SIZE; i++) {
 
             int col_L = i;

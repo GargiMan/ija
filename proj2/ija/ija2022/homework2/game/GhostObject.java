@@ -3,12 +3,11 @@ package ija.ija2022.homework2.game;
 import ija.ija2022.homework2.tool.common.CommonField;
 import ija.ija2022.homework2.tool.common.CommonMazeObject;
 
-public class PacmanObject implements CommonMazeObject {
+public class GhostObject implements CommonMazeObject {
 
-    private int lives = 3;
     private CommonField field;
 
-    public PacmanObject(CommonField field) {
+    public GhostObject(CommonField field) {
         this.field = field;
     }
 
@@ -29,19 +28,12 @@ public class PacmanObject implements CommonMazeObject {
     }
 
     @Override
-    public boolean isPacman() {
-        return true;
-    }
-
-    @Override
     public CommonField getField() {
         return field;
     }
 
     @Override
     public int getLives() {
-        return lives;
+        return 0;
     }
-
-
 }
