@@ -43,5 +43,8 @@ public class PacmanObject implements CommonMazeObject {
         return lives;
     }
 
+    public void hit() {
+        lives--;
+    }
 
 }
