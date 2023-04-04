@@ -21,6 +21,7 @@ run-visual: compile-visual
 	java -cp ./build:ijatool.jar $(VISUAL_CLASS)
 
 clean:
+	find . -name "*.class" -type f -delete
 	rm -rf $(LOGIN).zip build
 
 zip:
