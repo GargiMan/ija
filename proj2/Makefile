@@ -9,7 +9,7 @@ VISUAL_CLASS=ija.ija2022.homework2.Homework2
 all: run run-visual
 
 compile:
-	javac -cp .:ijatool.jar:junit-platform-console-standalone-1.6.0.jar $(TESTS)
+	javac -cp .:ijatool.jar:junit-platform-console-standalone-1.6.0.jar -d build $(TESTS)
 
 compile-visual:
 	javac -cp .:ijatool.jar -d build $(VISUAL)
@@ -21,8 +21,7 @@ run-visual: compile-visual
 	java -cp ./build:ijatool.jar $(VISUAL_CLASS)
 
 clean:
-	find . -name "*.class" -type f -delete
-	rm -rf $(LOGIN).zip
+	rm -rf $(LOGIN).zip build
 
-zip: clean
-	zip -r $(LOGIN).zip ija xmazur09.pdf -x $(TESTS) $(VISUAL)
+zip:
+	zip -r $(LOGIN).zip ija $(LOGIN).pdf -x $(TESTS) $(VISUAL)
